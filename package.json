@@ -1,9 +1,0 @@
-{
-  "name": "data-cloud-sql-composer",
-  "version": "1.0.0",
-  "private": true,
-  "description": "Salesforce Data Cloud SQL Composer with a secure Anthropic serverless proxy",
-  "engines": {
-    "node": ">=20"
-  }
-}
