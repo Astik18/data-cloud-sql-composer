@@ -1,32 +1,39 @@
-# Data Cloud SQL Composer
+# Data Cloud SQL Composer — Puter.js Edition
 
-A browser-based Salesforce Data Cloud SQL composer for Query Editor and Calculated Insights.
+This edition generates Salesforce Data Cloud Query Editor SQL and Calculated Insight SQL without a developer-owned Anthropic, OpenAI, or Gemini API key.
 
-## Important deployment note
+## How AI access works
 
-The frontend is static, but SQL generation calls Anthropic. Do not place an Anthropic API key in `index.html` or any browser JavaScript. This project includes a Vercel serverless endpoint at `api/generate.js`, which reads the key from an environment variable.
+- The page loads Puter.js from `https://js.puter.com/v2/`.
+- A visitor signs in to Puter when they generate SQL.
+- The developer has no AI API key and pays no AI bill.
+- Each visitor uses their own Puter allowance or billed usage. Puter controls model availability and limits.
 
-## Deploy from GitHub to Vercel
+## Deploy on the existing Vercel project
 
-1. Create a new GitHub repository, for example `data-cloud-sql-composer`.
-2. Upload all files and folders from this project, keeping the `api` folder intact.
-3. In Vercel, select **Add New > Project**, import the GitHub repository, and deploy it.
-4. In the Vercel project, open **Settings > Environment Variables**.
-5. Add `ANTHROPIC_API_KEY` with your Anthropic API key.
-6. Optionally add `ANTHROPIC_MODEL`; otherwise the server uses `claude-sonnet-4-6`.
-7. Redeploy the project after adding the environment variable.
+1. Replace the repository's current `index.html` with this one.
+2. Delete the `api` folder because it is no longer used.
+3. Delete `package.json`, `vercel.json`, and `.env.example` if they were only used for the old Anthropic backend. They are not required for this static edition.
+4. Remove `ANTHROPIC_API_KEY` from Vercel Environment Variables.
+5. Commit the changes. Vercel will redeploy automatically.
+
+## Deploy using GitHub Pages
+
+1. Upload `index.html`, `.nojekyll`, and this README to the repository root.
+2. Open GitHub repository **Settings → Pages**.
+3. Under **Build and deployment**, choose **Deploy from a branch**.
+4. Select `main` and `/(root)`, then save.
 
 ## Local test
 
-Install Vercel CLI and run:
+Opening `index.html` directly may work, but authentication popups are more reliable over HTTP. From this folder, run:
 
 ```bash
-npm install -g vercel
-vercel dev
+python -m http.server 8000
 ```
 
-Create `.env.local` from `.env.example` and put your real API key in it. Never commit `.env.local`.
+Then open `http://localhost:8000`.
 
-## GitHub Pages limitation
+## Important
 
-GitHub Pages can display `index.html`, but it cannot run the serverless endpoint in `api/generate.js`. Therefore the complete AI-enabled app should be deployed to Vercel (or another backend-capable platform) from the GitHub repository.
+There is no universal AI service that guarantees unlimited free usage for every user forever. This project removes the developer-owned API key and shifts AI usage to each signed-in Puter user.
